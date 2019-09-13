@@ -22,6 +22,7 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
     if not os.path.exists(output_dir_var):
         os.makedirs(output_dir_var)
 
+    # Do all the files in the directory...?
     if years is None:
         files = glob.glob(os.path.join(fpath, "%s/*.nc") % (var))
         years = np.sort(np.asarray([int(f[-7:-3]) for f in files]))
@@ -124,13 +125,15 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
 if __name__ == "__main__":
 
     years = np.arange(1995, 1996+1)
+    #years = np.arange(1995, 2010+1)
+    #years = np.arange(1995, 1996) # Test one year
+
     #fpath = "/g/data1/wd9/MetForcing/Global/GSWP3_2017/"
     fpath = "/Users/mdekauwe/Desktop/GSWP3"
     output_dir = "GSWP3_interpolated"
 
     # Expecting var to be supplied on cmd line, e.g.
     # $ python interpolate_forcing_to_30min.py "Tair"
-    # "LWdown", "PSurf", "SWdown", "Tair", "Qair", "Rainf", "Snowf", "Wind"
     if len(sys.argv) < 2:
         raise TypeError("Expecting var name to be supplied on cmd line!")
     var = sys.argv[1]
