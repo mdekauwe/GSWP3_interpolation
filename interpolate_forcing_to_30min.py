@@ -30,7 +30,7 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
     if len(years) > 1:
         last_year = years[-1]
     else:
-        last_year = years[0]
+        last_year = -9999 
 
     start_date = "%d-01-01,00:00:00" % (years[0])
 
