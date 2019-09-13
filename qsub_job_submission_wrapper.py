@@ -40,6 +40,10 @@ python src/interpolate_forcing_to_30min.py %s
     f.write(s)
     f.close()
 
+qsub_dir = "qsub_scripts"
+if not os.path.exists(qsub_dir):
+    os.makedirs(qsub_dir)
+
 for var in ["LWdown", "PSurf", "SWdown", "Tair", "Qair", \
             "Rainf", "Snowf", "Wind"]:
 
