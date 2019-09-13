@@ -126,11 +126,14 @@ if __name__ == "__main__":
     years = np.arange(1995, 1996+1)
     #fpath = "/g/data1/wd9/MetForcing/Global/GSWP3_2017/"
     #output_dir ="/g/data1a/w35/mgk576/research/GSWP3_30min"
-    #vars = ["LWdown", "PSurf", "SWdown", "Tair", "Qair", \
-    #         "Rainf", "Snowf", "Wind"]
     fpath = "/Users/mdekauwe/Desktop/GSWP3"
     output_dir = "/Users/mdekauwe/Desktop/test"
-    vars = ["Tair"]
 
-    for var in vars:
-        interpolate_forcing(fpath, var, output_dir, years)
+    # Expecting var to be supplied on cmd line, e.g.
+    # $ python interpolate_forcing_to_30min.py "Tair"
+    # "LWdown", "PSurf", "SWdown", "Tair", "Qair", "Rainf", "Snowf", "Wind"
+    if len(sys.argv) < 2:
+        raise TypeError("Expecting pft name to be supplied on cmd line!")
+    var = sys.argv[1]
+
+    interpolate_forcing(fpath, var, output_dir, years)
