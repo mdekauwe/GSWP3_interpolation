@@ -124,12 +124,15 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
 
 if __name__ == "__main__":
 
-    years = np.arange(1995, 1996+1)
     #years = np.arange(1995, 2010+1)
-    #years = np.arange(1995, 1996) # Test one year
+    years = np.arange(1995, 1996) # Test one year
 
-    #fpath = "/g/data1/wd9/MetForcing/Global/GSWP3_2017/"
-    fpath = "/Users/mdekauwe/Desktop/GSWP3"
+    (sysname, nodename, release, version, machine) = os.uname()
+    if "Mac" in nodename or "imac" in nodename:
+        fpath = "/Users/mdekauwe/Desktop/GSWP3"
+    else:
+        fpath = "/g/data1/wd9/MetForcing/Global/GSWP3_2017/"
+
     output_dir = "GSWP3_interpolated"
 
     # Expecting var to be supplied on cmd line, e.g.
