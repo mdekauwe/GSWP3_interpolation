@@ -125,9 +125,8 @@ if __name__ == "__main__":
 
     years = np.arange(1995, 1996+1)
     #fpath = "/g/data1/wd9/MetForcing/Global/GSWP3_2017/"
-    #output_dir ="/g/data1a/w35/mgk576/research/GSWP3_30min"
     fpath = "/Users/mdekauwe/Desktop/GSWP3"
-    output_dir = "/Users/mdekauwe/Desktop/test"
+    output_dir = "GSWP3_interpolated"
 
     # Expecting var to be supplied on cmd line, e.g.
     # $ python interpolate_forcing_to_30min.py "Tair"
