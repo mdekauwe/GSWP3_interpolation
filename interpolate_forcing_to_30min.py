@@ -27,7 +27,11 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
         files = glob.glob(os.path.join(fpath, "%s/*.nc") % (var))
         years = np.sort(np.asarray([int(f[-7:-3]) for f in files]))
 
-    last_year = years[-1]
+    if len(years) > 1:
+        last_year = years[-1]
+    else:
+        last_year = years[0]
+
     start_date = "%d-01-01,00:00:00" % (years[0])
 
     for year in years:
@@ -38,6 +42,7 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
         # We can just interpolate between the current year and the next year...
         if year != last_year:
 
+            print("here")
             # Get the first day of the next year day
             first_date = "%d-01-01" % (year)
             tmp_fn = os.path.join(output_dir_var, "tmp.nc")
@@ -46,6 +51,7 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
             if error is 1:
                 raise Exception("Error getting the first day")
 
+            print("here2")
             # merge extra day into file, so we can interpolate across the final
             # timestep which ends 21:00
             tmp2_fn = os.path.join(output_dir_var, "tmp2.nc")
@@ -54,6 +60,7 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
             if error is 1:
                 raise Exception("Error merging new file")
 
+            print("here3")
             # interpolate to 30 min
             out_fn = os.path.join(output_dir_var,
                                   "GSWP3.BC.%s.3hrMap.%d.nc" % (var, year))
