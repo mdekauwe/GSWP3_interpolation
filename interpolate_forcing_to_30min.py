@@ -132,7 +132,7 @@ if __name__ == "__main__":
     # $ python interpolate_forcing_to_30min.py "Tair"
     # "LWdown", "PSurf", "SWdown", "Tair", "Qair", "Rainf", "Snowf", "Wind"
     if len(sys.argv) < 2:
-        raise TypeError("Expecting pft name to be supplied on cmd line!")
+        raise TypeError("Expecting var name to be supplied on cmd line!")
     var = sys.argv[1]
 
     interpolate_forcing(fpath, var, output_dir, years)
