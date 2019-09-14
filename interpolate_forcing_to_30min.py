@@ -27,10 +27,11 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
         files = glob.glob(os.path.join(fpath, "%s/*.nc") % (var))
         years = np.sort(np.asarray([int(f[-7:-3]) for f in files]))
 
-    last_year = -9999
     if len(years) > 1:
         last_year = years[-1]
-        
+    else:
+        last_year = years[0] + 1
+
     start_date = "%d-01-01,00:00:00" % (years[0])
 
     for year in years:
@@ -136,7 +137,7 @@ if __name__ == "__main__":
     else:
         fpath = "/g/data1/wd9/MetForcing/Global/GSWP3_2017/"
 
-    output_dir = "GSWP3_interpolated"
+    output_dir = "interpolated"
 
     # Expecting var to be supplied on cmd line, e.g.
     # $ python interpolate_forcing_to_30min.py "Tair"
