@@ -25,7 +25,7 @@ def make_qsub_file(qsub_fname, var):
 #PBS -M mdekauwe@gmail.com
 #PBS -l mem=16GB
 #PBS -l ncpus=1
-#PBS -l walltime=00:10:00
+#PBS -l walltime=00:50:00
 #PBS -l wd
 #PBS -j oe
 #PBS -l other=gdata1
