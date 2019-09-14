@@ -27,10 +27,9 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
         files = glob.glob(os.path.join(fpath, "%s/*.nc") % (var))
         years = np.sort(np.asarray([int(f[-7:-3]) for f in files]))
 
+    last_year = -9999
     if len(years) > 1:
         last_year = years[-1]
-    else:
-        last_year = years[0] + 1
 
     start_date = "%d-01-01,00:00:00" % (years[0])
 
@@ -43,9 +42,11 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
         if year != last_year:
 
             # Get the first day of the next year day
-            first_date = "%d-01-01" % (year)
+            first_date = "%d-01-01" % (year + 1)
             tmp_fn = os.path.join(output_dir_var, "tmp.nc")
-            cmd = "cdo seldate,%s %s %s" % (first_date, fn, tmp_fn)
+            nxt_fn = os.path.join(fpath,"%s/GSWP3.BC.%s.3hrMap.%d.nc" % \
+                                         (var, var, year+1))
+            cmd = "cdo seldate,%s %s %s" % (first_date, nxt_fn, tmp_fn)
             error = subprocess.call(cmd, shell=True)
             if error is 1:
                 raise Exception("Error getting the first day")
@@ -59,17 +60,29 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
                 raise Exception("Error merging new file")
 
             # interpolate to 30 min
-            out_fn = os.path.join(output_dir_var,
-                                  "GSWP3.BC.%s.3hrMap.%d.nc" % (var, year))
+            tmp3_fn = os.path.join(output_dir_var, "tmp3.nc")
             start_date = "%d-01-01,00:00:00" % (year)
+
             cmd = "cdo inttime,%s,30minutes %s %s" % \
-                    (start_date, tmp2_fn, out_fn)
+                    (start_date, tmp2_fn, tmp3_fn)
             error = subprocess.call(cmd, shell=True)
             if error is 1:
                 raise Exception("Error interpolating file")
 
+            # Drop the final date from the extra year
+            out_fn = os.path.join(output_dir_var,
+                                  "GSWP3.BC.%s.3hrMap.%d.nc" % (var, year))
+            start_date = "%d-01-01" % (year)
+            end_date = "%d-12-31" % (year)
+            cmd = "cdo seldate,%s,%s %s %s" % \
+                    (start_date, end_date, tmp3_fn, out_fn)
+            error = subprocess.call(cmd, shell=True)
+            if error is 1:
+                raise Exception("Error dropping final day")
+
             os.remove(tmp_fn)
             os.remove(tmp2_fn)
+            os.remove(tmp3_fn)
 
         # There is no next year, so we need to use the same day again as a fudge
         # to interpolate across the final three hours
