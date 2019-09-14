@@ -33,7 +33,7 @@ def make_qsub_file(qsub_fname, var):
 module load dot
 source activate sci
 
-python src/interpolate_forcing_to_30min.py %s
+python interpolate_forcing_to_30min.py %s
         """ % (var)
 
     f = open(qsub_fname, 'w')
