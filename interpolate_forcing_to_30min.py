@@ -141,7 +141,8 @@ def interpolate_forcing(fpath, var, output_dir, years=None):
 
 if __name__ == "__main__":
 
-    years = np.arange(1995, 2010+1)
+    years = np.arange(1986, 1995+1)
+    #years = np.arange(1995, 2010+1)
     #years = np.arange(1995, 1996) # Test one year
     #years = np.arange(1995, 1996 + 1) # Test two year
 
